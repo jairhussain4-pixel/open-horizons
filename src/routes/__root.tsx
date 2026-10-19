@@ -77,22 +77,25 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" },
+      { title: "Eterniza — Abrace de novo quem partiu" },
+      { name: "description", content: "Envie 2 fotos e veja o reencontro entre você e quem partiu, num abraço no céu. Veja a prévia antes de pagar." },
+      { name: "theme-color", content: "#000000" },
+      { property: "og:title", content: "Eterniza — Abrace de novo quem partiu" },
+      { property: "og:description", content: "Envie 2 fotos e veja o reencontro entre você e quem partiu, num abraço no céu." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Fraunces:opsz,wght@9..144,600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap",
+      },
+      { rel: "icon", href: "https://eternizaamor.com/assets/img/favicon.png", type: "image/png" },
     ],
   }),
   shellComponent: RootShell,
@@ -103,11 +106,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR" className="dark bg-black">
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body className="bg-black text-white selection:bg-amber-500/30">
         {children}
         <Scripts />
       </body>
