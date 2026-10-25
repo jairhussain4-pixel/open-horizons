@@ -63,13 +63,13 @@ const PROVAS = [
   "https://eternizaamor.com/assets/img/prova-reencontro-4.webp",
 ];
 
-function EternizaLogo({ className = "h-11" }: { className?: string }) {
+function EternizaLogo({ className = "h-11", dark = false }: { className?: string; dark?: boolean }) {
   return (
     <div className="flex items-center justify-center gap-2 select-none py-1">
       <img
         src="https://eternizaamor.com/assets/img/eterniza-logo.webp"
         alt="Eterniza"
-        className={`${className} object-contain`}
+        className={`${className} object-contain ${dark ? "brightness-90 contrast-125" : ""}`}
         onError={(e) => {
           // Fallback if network blocked
           const target = e.currentTarget;
@@ -77,7 +77,9 @@ function EternizaLogo({ className = "h-11" }: { className?: string }) {
           const parent = target.parentElement;
           if (parent && !parent.querySelector(".logo-fallback")) {
             const fallback = document.createElement("div");
-            fallback.className = "logo-fallback flex items-center gap-2 font-serif text-2xl font-bold tracking-tight text-[#E7C86B]";
+            fallback.className = `logo-fallback flex items-center gap-2 font-serif text-2xl font-bold tracking-tight ${
+              dark ? "text-amber-700" : "text-[#E7C86B]"
+            }`;
             fallback.innerHTML = `<span class="text-3xl">🕊️</span> <span>Eterniza</span>`;
             parent.appendChild(fallback);
           }
@@ -243,27 +245,37 @@ function EternizaApp() {
     }
   };
 
+  const isWhiteScreen = currentScreen === "scenarios";
+
   return (
-    <div className="min-h-screen bg-black text-white flex justify-center selection:bg-amber-500/30 font-sans">
+    <div
+      className={`min-h-screen flex justify-center selection:bg-amber-500/30 font-sans transition-colors duration-300 ${
+        isWhiteScreen ? "bg-neutral-100 text-neutral-900" : "bg-black text-white"
+      }`}
+    >
       {/* Mobile container - Max 440px like true native app */}
       <div
         ref={scrollRef}
         onScroll={currentScreen === "checkout" ? handleCheckoutScroll : undefined}
-        className="w-full max-w-[440px] min-h-screen bg-black flex flex-col relative overflow-x-hidden shadow-2xl border-x border-neutral-900"
+        className={`w-full max-w-[440px] min-h-screen flex flex-col relative overflow-x-hidden shadow-2xl transition-colors duration-300 ${
+          isWhiteScreen
+            ? "bg-white text-neutral-900 border-x border-neutral-200"
+            : "bg-black text-white border-x border-neutral-900"
+        }`}
       >
         {/* =========================================================================
-            SCREEN 21: ESCOLHA DO CENÁRIO (ABERTURA OFICIAL)
+            SCREEN 21: ESCOLHA DO CENÁRIO (ABERTURA OFICIAL) - FUNDO BRANCO
            ========================================================================= */}
         {currentScreen === "scenarios" && (
-          <div className="flex-1 flex flex-col px-4 pt-3 pb-8 animate-in fade-in duration-300">
+          <div className="flex-1 flex flex-col px-4 pt-3 pb-8 animate-in fade-in duration-300 bg-white text-neutral-900">
             <header className="mb-2">
-              <EternizaLogo />
+              <EternizaLogo dark />
             </header>
 
-            <h1 className="text-xl md:text-2xl font-bold text-center leading-snug tracking-tight text-white mb-1.5">
+            <h1 className="text-xl md:text-2xl font-bold text-center leading-snug tracking-tight text-neutral-900 mb-1.5 font-serif">
               Escolha o cenário
             </h1>
-            <p className="text-[12.5px] text-white/75 text-center mb-4 font-normal">
+            <p className="text-[13px] text-neutral-600 text-center mb-5 font-normal">
               Toque na cena e veja novamente quem fez tanta&nbsp;falta 💛
             </p>
 
@@ -277,10 +289,10 @@ function EternizaApp() {
                     setSelectedScenario(item);
                     setCurrentScreen("upload");
                   }}
-                  className={`group relative rounded-2xl overflow-hidden aspect-[9/16] bg-neutral-950 border transition-all duration-200 text-left active:scale-[0.98] ${
+                  className={`group relative rounded-2xl overflow-hidden aspect-[9/16] bg-neutral-100 border transition-all duration-200 text-left active:scale-[0.98] shadow-sm hover:shadow-md ${
                     selectedScenario.id === item.id
-                      ? "border-[#E7C86B] ring-2 ring-[#E7C86B]/40 shadow-lg shadow-[#E7C86B]/15"
-                      : "border-white/15 hover:border-[#E7C86B]/70"
+                      ? "border-amber-500 ring-2 ring-amber-500/40 shadow-lg shadow-amber-500/20"
+                      : "border-neutral-200 hover:border-amber-500/60"
                   }`}
                 >
                   <video
@@ -297,7 +309,7 @@ function EternizaApp() {
                     <span className="text-[12px] font-bold text-white leading-tight drop-shadow-md">
                       {item.title}
                     </span>
-                    <span className="text-[10px] text-[#E7C86B] font-medium mt-0.5">
+                    <span className="text-[10px] text-amber-300 font-semibold mt-0.5">
                       Toque para escolher ›
                     </span>
                   </div>
@@ -306,19 +318,19 @@ function EternizaApp() {
             </div>
 
             {/* Footer Links */}
-            <footer className="mt-auto pt-4 text-center border-t border-white/10 text-xs text-white/50 flex flex-wrap justify-center gap-x-4 gap-y-1">
-              <a href="#" className="hover:text-white transition-colors">
+            <footer className="mt-auto pt-4 text-center border-t border-neutral-200 text-xs text-neutral-500 flex flex-wrap justify-center gap-x-4 gap-y-1">
+              <a href="#" className="hover:text-neutral-800 transition-colors">
                 Termos de Uso
               </a>
-              <span className="text-white/20">•</span>
-              <a href="#" className="hover:text-white transition-colors">
+              <span className="text-neutral-300">•</span>
+              <a href="#" className="hover:text-neutral-800 transition-colors">
                 Política de Privacidade
               </a>
-              <div className="w-full text-[11px] text-white/40 mt-1">
+              <div className="w-full text-[11px] text-neutral-500 mt-1">
                 Precisa de ajuda?{" "}
                 <a
                   href="mailto:contato@eternizaamor.com"
-                  className="text-white/70 underline underline-offset-2"
+                  className="text-neutral-800 font-medium underline underline-offset-2"
                 >
                   contato@eternizaamor.com
                 </a>
